@@ -14,7 +14,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 
-@Service("productervice")
+@Service("producStervice")
 public class ProductServiceImpl implements BaseService <Product> {
     @Autowired
     Product product;
