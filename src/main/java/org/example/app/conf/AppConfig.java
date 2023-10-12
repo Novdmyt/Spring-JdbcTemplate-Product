@@ -12,7 +12,7 @@ import javax.sql.DataSource;
 import java.util.Objects;
 
 @Configuration
-@ComponentScan
+@ComponentScan("org.example.app")
 @PropertySource("classpath:app.properties")
 public class AppConfig {
     @Autowired
