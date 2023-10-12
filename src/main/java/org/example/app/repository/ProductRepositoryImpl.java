@@ -31,8 +31,7 @@ public class ProductRepositoryImpl implements BaseRepository<Product> {
         String sql = "SELECT * FROM products";
         Optional<List<Product>> optional;
         try {
-            optional = Optional.of(jdbcTemplate
-                    .query(sql, new ProductMapper()));
+            optional = Optional.of(jdbcTemplate.query(sql, new ProductMapper()));
         } catch (Exception ex) {
             optional = Optional.empty();
         }
@@ -44,7 +43,7 @@ public class ProductRepositoryImpl implements BaseRepository<Product> {
         String sql = "SELECT * FROM products WHERE id = ? LIMIT 1";
         Optional<Product> optional;
         try {
-            optional = Optional.ofNullable((Product) jdbcTemplate
+            optional = Optional.ofNullable(jdbcTemplate
                     .queryForObject(sql, new ProductMapper(), id));
         } catch (Exception ex) {
             optional = Optional.empty();
@@ -57,7 +56,7 @@ public class ProductRepositoryImpl implements BaseRepository<Product> {
         Optional<Product> optional = getById(product.getId());
         if (optional.isEmpty()) return false;
         else {
-            String sql = "UPDATE contacts SET name = ?, quota = ?, price = ? WHERE id = ?";
+            String sql = "UPDATE products SET name = ?, quota = ?, price = ? WHERE id = ?";
             return jdbcTemplate.update(sql, product.getName(), product.getQuota(), product.getPrice(),
                     product.getId()) > 0;
         }
@@ -68,7 +67,7 @@ public class ProductRepositoryImpl implements BaseRepository<Product> {
         Optional<Product> optional = getById(product.getId());
         if (optional.isEmpty()) return false;
         else {
-            String sql = "DELETE FROM contacts WHERE id = ?";
+            String sql = "DELETE FROM products WHERE id = ?";
             return jdbcTemplate.update(sql, product.getId()) > 0;
         }
     }
