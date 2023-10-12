@@ -8,11 +8,9 @@ import org.example.app.utils.IdValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Predicate;
 
 @Service("productService")
 public class ProductServiceImpl implements BaseService <Product> {
@@ -116,12 +114,20 @@ public class ProductServiceImpl implements BaseService <Product> {
         }
     }
 
-    private void validateData(Product product) {
-        if (product.getName().isEmpty())
-            errors.put("name", Constants.INPUT_REQ_MSG);
-        if (product.getQuota().isEmpty())
-            errors.put("quota", Constants.INPUT_REQ_MSG);
+    private String  validateData(Product product) {
+        List<String> errors = new ArrayList<>();
 
+        checkField(product.getName(), "name", errors, String::isEmpty);
+        checkField(product.getQuota(), "quota", errors, Objects::isNull);
+        checkField(product.getPrice(), "price", errors, Objects::isNull);
+
+        return String.join("\n", errors);
+    }
+
+    private <T> void checkField(T field, String fieldName, List<String> errors, Predicate<T> condition) {
+        if (condition.test(field)) {
+            errors.add(">> " + fieldName + ": " + Constants.INPUT_REQ_MSG);
+        }
     }
 
     private void validateId(String id) {
